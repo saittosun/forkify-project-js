@@ -5052,8 +5052,6 @@ var _regeneratorRuntime = require("regenerator-runtime");
 
 var _config = require("./config");
 
-var _helpers = require("./helpers");
-
 const state = {
   recipe: {}
 };
@@ -5061,7 +5059,10 @@ exports.state = state;
 
 const loadRecipe = async function (id) {
   try {
-    const data = await (0, _helpers.getJSON)(`${_config.API_URL}/${id}`);
+    const res = await fetch(`${_config.API_URL}/${id}`);
+    const data = await res.json();
+    if (!res.ok) throw new Error(`${data.message} ${res.status}`);
+    console.log(res, data.data.recipe);
     const {
       recipe
     } = data.data;
@@ -5077,13 +5078,12 @@ const loadRecipe = async function (id) {
     };
     console.log(state.recipe);
   } catch (err) {
-    // temporarily error handling
-    console.log(`${err}`);
+    alert(err);
   }
 };
 
 exports.loadRecipe = loadRecipe;
-},{"regenerator-runtime":"e155e0d3930b156f86c48e8d05522b16","./config":"09212d541c5c40ff2bd93475a904f8de","./helpers":"0e8dcd8a4e1c61cf18f78e1c2563655d"}],"e155e0d3930b156f86c48e8d05522b16":[function(require,module,exports) {
+},{"regenerator-runtime":"e155e0d3930b156f86c48e8d05522b16","./config":"09212d541c5c40ff2bd93475a904f8de"}],"e155e0d3930b156f86c48e8d05522b16":[function(require,module,exports) {
 /**
  * Copyright (c) 2014-present, Facebook, Inc.
  *
@@ -5834,38 +5834,8 @@ try {
 }
 
 },{}],"09212d541c5c40ff2bd93475a904f8de":[function(require,module,exports) {
-"use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.API_URL = void 0;
-const API_URL = 'https://forkify-api.herokuapp.com/api/v2/recipes';
-exports.API_URL = API_URL;
-},{}],"0e8dcd8a4e1c61cf18f78e1c2563655d":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.getJSON = void 0;
-
-var _regeneratorRuntime = require("regenerator-runtime");
-
-const getJSON = async function (url) {
-  try {
-    const res = await fetch(url);
-    const data = await res.json();
-    if (!res.ok) throw new Error(`${data.message} ${res.status}`);
-    console.log(res, data.data.recipe);
-    return data;
-  } catch (err) {
-    console.log(err);
-  }
-};
-
-exports.getJSON = getJSON;
-},{"regenerator-runtime":"e155e0d3930b156f86c48e8d05522b16"}],"bcae1aced0301b01ccacb3e6f7dfede8":[function(require,module,exports) {
+},{}],"bcae1aced0301b01ccacb3e6f7dfede8":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
