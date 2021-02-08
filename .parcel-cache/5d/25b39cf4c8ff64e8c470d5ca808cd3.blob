@@ -517,7 +517,7 @@ const controlSearchResults = async function () {
 
     console.log(model.state.search.results); // resultsView.render(model.state.search.results)
 
-    _resultsView.default.render(model.getSearchResultsPage());
+    _resultsView.default.render(model.getSearchResultsPage(1));
   } catch (err) {
     console.log(err);
   }
