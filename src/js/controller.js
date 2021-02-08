@@ -1,13 +1,13 @@
+import { async } from 'regenerator-runtime/runtime';
 import * as model from './model'
-import recipeView from './views/recipeView'
+import recipeView from './views/recipeView';
+import searchView from './views/searchView';
 
 //add polyfills for es6 features  
 // this one is for polyfilling everything else
 import 'core-js/stable';
 // this one is for polyfilling async/await
 import 'regenerator-runtime/runtime';
-
-const recipeContainer = document.querySelector('.recipe');
 
 const controlRecipes = async function () {
   try {
@@ -29,8 +29,21 @@ const controlRecipes = async function () {
   }
 }
 
+const controlSearchResults = async function () {
+  try {
+    const query = searchView.getQuery();
+    if (!query) return;
+
+    await model.loadSearchResults(query)
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+
 const init = function () {
-  recipeView.addHandlerRender(controlRecipes)
+  recipeView.addHandlerRender(controlRecipes);
+  searchView.addHandlerSearch(controlSearchResults);
 }
 init();
 

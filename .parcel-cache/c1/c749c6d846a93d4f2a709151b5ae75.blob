@@ -503,7 +503,7 @@ const controlSearchResults = async function () {
     const query = _searchView.default.getQuery();
 
     if (!query) return;
-    await model.loadSearchResults(query);
+    await model.loadSearchResults('pizza');
   } catch (err) {
     console.log(err);
   }
@@ -6623,55 +6623,7 @@ Fraction.primeFactors = function(n)
 module.exports.Fraction = Fraction
 
 },{}],"c5d792f7cac03ef65de30cc0fbb2cae7":[function(require,module,exports) {
-"use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-function _classPrivateMethodGet(receiver, privateSet, fn) { if (!privateSet.has(receiver)) { throw new TypeError("attempted to get private field on non-instance"); } return fn; }
-
-function _classPrivateFieldGet(receiver, privateMap) { var descriptor = privateMap.get(receiver); if (!descriptor) { throw new TypeError("attempted to get private field on non-instance"); } if (descriptor.get) { return descriptor.get.call(receiver); } return descriptor.value; }
-
-var _parentEl = new WeakMap();
-
-var _clearInput = new WeakSet();
-
-class SearchView {
-  constructor() {
-    _clearInput.add(this);
-
-    _parentEl.set(this, {
-      writable: true,
-      value: document.querySelector('.search')
-    });
-  }
-
-  getQuery() {
-    const query = _classPrivateFieldGet(this, _parentEl).querySelector('.search__field').value;
-
-    _classPrivateMethodGet(this, _clearInput, _clearInput2).call(this);
-
-    return query;
-  }
-
-  addHandlerSearch(handler) {
-    _classPrivateFieldGet(this, _parentEl).addEventListener('submit', function (e) {
-      e.preventDefault();
-      handler();
-    });
-  }
-
-}
-
-var _clearInput2 = function _clearInput2() {
-  _classPrivateFieldGet(this, _parentEl).querySelector('.search__field').value = '';
-};
-
-var _default = new SearchView();
-
-exports.default = _default;
 },{}]},{},["d92df174e56151e3ae2977bfecb95da9","1c0351d7f7a01a8a1d75f67c5454773f","175e469a7ea7db1c8c0744d04372621f"], null)
 
 //# sourceMappingURL=controller.f6d3b1b4.js.map
