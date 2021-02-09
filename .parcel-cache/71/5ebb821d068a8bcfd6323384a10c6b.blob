@@ -550,24 +550,10 @@ const controlServings = function (newServings) {
   _recipeView.default.update(model.state.recipe);
 };
 
-const controlAddBookmark = function () {
-  // console.log(model.state.recipe)
-  if (!model.state.recipe.bookmarked) {
-    model.addBookmark(model.state.recipe);
-  } else {
-    model.deleteBookmark(model.state.recipe.id);
-  } // console.log(model.state.recipe);
-
-
-  _recipeView.default.update(model.state.recipe);
-};
-
 const init = function () {
   _recipeView.default.addHandlerRender(controlRecipes);
 
   _recipeView.default.addHandlerUpdateServings(controlServings);
-
-  _recipeView.default.addHandlerAddBookmark(controlAddBookmark);
 
   _searchView.default.addHandlerSearch(controlSearchResults);
 
@@ -5864,7 +5850,7 @@ try {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.deleteBookmark = exports.addBookmark = exports.updateServings = exports.getSearchResultsPage = exports.loadSearchResults = exports.loadRecipe = exports.state = void 0;
+exports.updateServings = exports.getSearchResultsPage = exports.loadSearchResults = exports.loadRecipe = exports.state = void 0;
 
 var _regeneratorRuntime = require("regenerator-runtime");
 
@@ -5879,8 +5865,7 @@ const state = {
     results: [],
     page: 1,
     resultsPerPage: _config.RES_PER_PAGE
-  },
-  bookmarks: []
+  }
 };
 exports.state = state;
 
@@ -5900,13 +5885,6 @@ const loadRecipe = async function (id) {
       cookingTime: recipe.cooking_time,
       ingredients: recipe.ingredients
     };
-
-    if (state.bookmarks.some(bookmark => bookmark.id === id)) {
-      state.recipe.bookmarked = true;
-    } else {
-      state.recipe.bookmarked = false;
-    }
-
     console.log(state.recipe);
   } catch (err) {
     throw err;
@@ -5958,23 +5936,6 @@ const updateServings = function (newServings) {
 };
 
 exports.updateServings = updateServings;
-
-const addBookmark = function (recipe) {
-  // add bookmark
-  state.bookmarks.push(recipe); // mark current recipe as bookmark
-
-  if (recipe.id === state.recipe.id) state.recipe.bookmarked = true;
-};
-
-exports.addBookmark = addBookmark;
-
-const deleteBookmark = function (id) {
-  const index = state.bookmarks.findIndex(el => el.id === id);
-  state.bookmarks.slice(index, 1);
-  if (id === state.recipe.id) state.recipe.bookmarked = false;
-};
-
-exports.deleteBookmark = deleteBookmark;
 },{"regenerator-runtime":"e155e0d3930b156f86c48e8d05522b16","./config":"09212d541c5c40ff2bd93475a904f8de","./helpers":"0e8dcd8a4e1c61cf18f78e1c2563655d"}],"09212d541c5c40ff2bd93475a904f8de":[function(require,module,exports) {
 "use strict";
 
@@ -6070,14 +6031,6 @@ class RecipeView extends _View.default {
     });
   }
 
-  addHandlerAddBookmark(handler) {
-    this._parentElement.addEventListener('click', function (e) {
-      const btn = e.target.closest('.btn--bookmark');
-      if (!btn) return;
-      handler();
-    });
-  }
-
   _generateMarkup() {
     return `
       <figure class="recipe__fig">
@@ -6119,9 +6072,9 @@ class RecipeView extends _View.default {
         <div class="recipe__user-generated">
 
         </div>
-        <button class="btn--round btn--bookmark">
+        <button class="btn--round">
           <svg class="">
-            <use href="${_icons.default}#icon-bookmark${this._data.bookmarked ? '-fill' : ''}"></use>
+            <use href="${_icons.default}#icon-bookmark-fill"></use>
           </svg>
         </button>
       </div>
@@ -6695,23 +6648,23 @@ class View {
     const newMarkup = this._generateMarkup();
 
     const newDOM = document.createRange().createContextualFragment(newMarkup);
-    const newElements = Array.from(newDOM.querySelectorAll('*')); // console.log(newElements);
-
-    const curElements = Array.from(this._parentElement.querySelectorAll('*')); // console.log(curElements);
-
+    const newElements = Array.from(newDOM.querySelectorAll('*'));
+    console.log(newElements);
+    const curElements = Array.from(this._parentElement.querySelectorAll('*'));
+    console.log(curElements);
     newElements.forEach((newEl, i) => {
-      const curEl = curElements[i]; // console.log(curEl, newEl.isEqualNode(curEl))
-      // updates changed TEXT
+      const curEl = curElements[i];
+      console.log(curEl, newEl.isEqualNode(curEl)); // updates changed TEXT
 
       if (!newEl.isEqualNode(curEl) && newEl.firstChild?.nodeValue.trim()) {
-        // console.log(newEl)
-        // console.log(newEl.firstChild.nodeValue.trim())
+        console.log(newEl);
+        console.log(newEl.firstChild.nodeValue.trim());
         curEl.textContent = newEl.textContent;
       } // updates changed ATTRIBUTES
 
 
       if (!newEl.isEqualNode(curEl)) {
-        // console.log(Array.from(newEl.attributes));
+        console.log(Array.from(newEl.attributes));
         Array.from(newEl.attributes).forEach(attr => {
           curEl.setAttribute(attr.name, attr.value);
         });
