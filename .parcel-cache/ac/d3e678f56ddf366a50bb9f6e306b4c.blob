@@ -500,9 +500,7 @@ const controlRecipes = async function () {
     _recipeView.default.renderSpinner(); // 0) update results view to mark selected search result
 
 
-    _resultsView.default.update(model.getSearchResultsPage());
-
-    _bookmarksView.default.update(model.state.bookmarks); // 1) loading recipe
+    _resultsView.default.update(model.getSearchResultsPage()); // 1) loading recipe
 
 
     await model.loadRecipe(id); // 2) rendering recipe
@@ -6975,13 +6973,13 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-class BookmarksView extends _View.default {
+class ResultsView extends _View.default {
   constructor(...args) {
     super(...args);
 
-    _defineProperty(this, "_parentElement", document.querySelector('.bookmarks__list'));
+    _defineProperty(this, "_parentElement", document.querySelector('.results'));
 
-    _defineProperty(this, "_errorMessage", 'No bookmarks yet. Find a nice recipe and bookmark it!!');
+    _defineProperty(this, "_errorMessage", 'No recipes found for your query!!');
 
     _defineProperty(this, "_message", '');
   }
@@ -7010,7 +7008,7 @@ class BookmarksView extends _View.default {
 
 }
 
-var _default = new BookmarksView();
+var _default = new ResultsView();
 
 exports.default = _default;
 },{"./View":"61b7a1b097e16436be3d54c2f1828c73"}]},{},["d92df174e56151e3ae2977bfecb95da9","1c0351d7f7a01a8a1d75f67c5454773f","175e469a7ea7db1c8c0744d04372621f"], null)
