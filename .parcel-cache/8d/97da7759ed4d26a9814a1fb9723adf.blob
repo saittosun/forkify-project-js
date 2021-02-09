@@ -6020,7 +6020,7 @@ class RecipeView extends _View.default {
       console.log(btn);
       const {
         updateTo
-      } = btn.dataset;
+      } = +btn.dataset;
       console.log(typeof updateTo);
       if (+updateTo > 0) handler(+updateTo);
     });
