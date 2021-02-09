@@ -495,10 +495,7 @@ const controlRecipes = async function () {
     console.log('id: ', id);
     if (!id) return; // render spinner
 
-    _recipeView.default.renderSpinner(); // 0) update results view to mark selected search result
-
-
-    _resultsView.default.update(model.getSearchResultsPage()); // 1) loading recipe
+    _recipeView.default.renderSpinner(); // 1) loading recipe
 
 
     await model.loadRecipe(id); // 2) rendering recipe
@@ -6642,6 +6639,7 @@ class View {
   }
 
   update(data) {
+    if (!data || Array.isArray(data) && data.length === 0) return this.renderError();
     this._data = data;
 
     const newMarkup = this._generateMarkup();
@@ -6651,24 +6649,6 @@ class View {
     console.log(newElements);
     const curElements = Array.from(this._parentElement.querySelectorAll('*'));
     console.log(curElements);
-    newElements.forEach((newEl, i) => {
-      const curEl = curElements[i];
-      console.log(curEl, newEl.isEqualNode(curEl)); // updates changed TEXT
-
-      if (!newEl.isEqualNode(curEl) && newEl.firstChild?.nodeValue.trim()) {
-        console.log(newEl);
-        console.log(newEl.firstChild.nodeValue.trim());
-        curEl.textContent = newEl.textContent;
-      } // updates changed ATTRIBUTES
-
-
-      if (!newEl.isEqualNode(curEl)) {
-        console.log(Array.from(newEl.attributes));
-        Array.from(newEl.attributes).forEach(attr => {
-          curEl.setAttribute(attr.name, attr.value);
-        });
-      }
-    });
   }
 
   renderSpinner() {
@@ -6794,10 +6774,9 @@ class ResultsView extends _View.default {
   }
 
   _generateMarkupPreview(result) {
-    const id = window.location.hash.slice(1);
     return `
       <li class="preview">
-        <a class="preview__link ${result.id === id ? 'preview__link--active' : ''}" href="#${result.id}">
+        <a class="preview__link" href="#${result.id}">
           <figure class="preview__fig">
             <img src="${result.image}" alt="${result.title}" />
           </figure>
