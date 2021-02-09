@@ -520,7 +520,7 @@ const controlSearchResults = async function () {
 
     console.log(model.state.search.results); // resultsView.render(model.state.search.results)
 
-    _resultsView.default.render(model.getSearchResultsPage()); // 4) render initial pagination buttons
+    _resultsView.default.render(model.getSearchResultsPage(6)); // 4) render initial pagination buttons
 
 
     _paginationView.default.render(model.state.search);
@@ -529,14 +529,8 @@ const controlSearchResults = async function () {
   }
 };
 
-const controlPagination = function (goToPage) {
+const controlPagination = function () {
   console.log('pagination controller');
-  console.log(goToPage); // 1) render NEW results
-
-  _resultsView.default.render(model.getSearchResultsPage(goToPage)); // 2) render NEW pagination buttons
-
-
-  _paginationView.default.render(model.state.search);
 };
 
 const init = function () {
@@ -6775,11 +6769,9 @@ class PaginationView extends _View.default {
     this._parentElement.addEventListener('click', function (e) {
       const btn = e.target.closest('.btn--inline');
       console.log(btn);
-      if (!btn) return; // using data attributes applies connection between our code and dom
-
-      const goToPage = +btn.dataset.goto;
+      const goToPage = btn.dataset.goto;
       console.log(goToPage);
-      handler(goToPage);
+      handler();
     });
   }
 
@@ -6792,7 +6784,7 @@ class PaginationView extends _View.default {
     if (curPage === 1 && numPages > 1) {
       return `
         <button data-goto="${curPage + 1}" class="btn--inline pagination__btn--next">
-          <span>Page ${curPage + 1}</span>
+          <span>${curPage + 1}</span>
           <svg class="search__icon">
             <use href="${_icons.default}#icon-arrow-right"></use>
           </svg>

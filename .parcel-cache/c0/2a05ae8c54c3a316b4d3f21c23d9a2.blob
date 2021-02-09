@@ -520,7 +520,7 @@ const controlSearchResults = async function () {
 
     console.log(model.state.search.results); // resultsView.render(model.state.search.results)
 
-    _resultsView.default.render(model.getSearchResultsPage()); // 4) render initial pagination buttons
+    _resultsView.default.render(model.getSearchResultsPage(2)); // 4) render initial pagination buttons
 
 
     _paginationView.default.render(model.state.search);
@@ -529,22 +529,10 @@ const controlSearchResults = async function () {
   }
 };
 
-const controlPagination = function (goToPage) {
-  console.log('pagination controller');
-  console.log(goToPage); // 1) render NEW results
-
-  _resultsView.default.render(model.getSearchResultsPage(goToPage)); // 2) render NEW pagination buttons
-
-
-  _paginationView.default.render(model.state.search);
-};
-
 const init = function () {
   _recipeView.default.addHandlerRender(controlRecipes);
 
   _searchView.default.addHandlerSearch(controlSearchResults);
-
-  _paginationView.default.addHandlerClick(controlPagination);
 };
 
 init();
@@ -6758,8 +6746,6 @@ exports.default = void 0;
 
 var _View = _interopRequireDefault(require("./View"));
 
-var _icons = _interopRequireDefault(require("url:../../img/icons.svg"));
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -6771,67 +6757,23 @@ class PaginationView extends _View.default {
     _defineProperty(this, "_parentElement", document.querySelector('.pagination'));
   }
 
-  addHandlerClick(handler) {
-    this._parentElement.addEventListener('click', function (e) {
-      const btn = e.target.closest('.btn--inline');
-      console.log(btn);
-      if (!btn) return; // using data attributes applies connection between our code and dom
-
-      const goToPage = +btn.dataset.goto;
-      console.log(goToPage);
-      handler(goToPage);
-    });
-  }
-
   _generateMarkup() {
-    const curPage = this._data.page;
     const numPages = Math.ceil(this._data.results.length / this._data.resultsPerPage);
     console.log(numPages);
     console.log(this._data.page); // page1, and there are other pages
 
-    if (curPage === 1 && numPages > 1) {
-      return `
-        <button data-goto="${curPage + 1}" class="btn--inline pagination__btn--next">
-          <span>Page ${curPage + 1}</span>
-          <svg class="search__icon">
-            <use href="${_icons.default}#icon-arrow-right"></use>
-          </svg>
-        </button> 
-      `;
-    } // last page
+    if (this._data.page === 1 && numPages > 1) return 'page1 and others'; // page1, and there are NO other pages
 
+    if (numPages === 1) return 'no other pages'; // last page
 
-    if (curPage === numPages && numPages > 1) {
-      return `
-        <button data-goto="${curPage - 1}" class="btn--inline pagination__btn--prev">
-          <svg class="search__icon">
-            <use href="${_icons.default}#icon-arrow-left"></use>
-          </svg>
-          <span>Page ${curPage - 1}</span>
-        </button>
-      `;
+    if (this._data.page === numPages && numPages > 1) {
+      return 'last page';
     } // some other page
 
 
-    if (curPage < numPages) {
-      return `
-        <button data-goto="${curPage - 1}" class="btn--inline pagination__btn--prev">
-          <svg class="search__icon">
-            <use href="${_icons.default}#icon-arrow-left"></use>
-          </svg>
-          <span>Page ${curPage - 1}</span>
-        </button>
-        <button data-goto="${curPage + 1}" class="btn--inline pagination__btn--next">
-          <span>Page ${curPage + 1}</span>
-          <svg class="search__icon">
-            <use href="${_icons.default}#icon-arrow-right"></use>
-          </svg>
-        </button> 
-      `;
-    } // page1, and there are NO other pages
-
-
-    return '';
+    if (this._data.page > 1 && numPages > 1) {
+      return 'some other page';
+    }
   }
 
 }
@@ -6839,6 +6781,6 @@ class PaginationView extends _View.default {
 var _default = new PaginationView();
 
 exports.default = _default;
-},{"./View":"61b7a1b097e16436be3d54c2f1828c73","url:../../img/icons.svg":"660d074be1d7e9fb5196dc2cb757f4e2"}]},{},["d92df174e56151e3ae2977bfecb95da9","1c0351d7f7a01a8a1d75f67c5454773f","175e469a7ea7db1c8c0744d04372621f"], null)
+},{"./View":"61b7a1b097e16436be3d54c2f1828c73"}]},{},["d92df174e56151e3ae2977bfecb95da9","1c0351d7f7a01a8a1d75f67c5454773f","175e469a7ea7db1c8c0744d04372621f"], null)
 
 //# sourceMappingURL=controller.f6d3b1b4.js.map
