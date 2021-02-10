@@ -88,11 +88,8 @@ const controlAddBookmark = function () {
   // console.log(model.state.recipe)
 
   // 1) add or remove bookmark
-  if (!model.state.recipe.bookmarked) {
-    model.addBookmark(model.state.recipe);
-  } else {
-    model.deleteBookmark(model.state.recipe.id);
-  }
+  if (!model.state.recipe.bookmarked) model.addBookmark(model.state.recipe);
+  else model.deleteBookmark(model.state.recipe.id);
 
   // 2) update recipe view
   // console.log(model.state.recipe);
